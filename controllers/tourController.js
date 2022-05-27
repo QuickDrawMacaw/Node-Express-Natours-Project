@@ -1,8 +1,25 @@
+const { query } = require('express');
 const Tour = require('../models/tourModel');
 
 exports.getAllTours = async (req, res) => {
   try {
-    const tours = await Tour.find();
+    //BUILD QUERY
+    const queryObj = { ...req.query }; //Creates a hard copy rather than a shallow copy.
+    const excludeFields = ['page', 'sort', 'limit', 'fields'];
+    excludeFields.forEach((field) => delete queryObj[field]);
+
+    const query = await Tour.find(queryObj);
+
+    // const query = Tour.find()
+    //   .where('duration')
+    //   .equals(5)
+    //   .where('difficulty')
+    //   .equals('easy');
+
+    //EXECUTE QUERY
+    const tours = await query;
+
+    //SEND RESPONSE
     res.status(200).json({
       status: 'success',
       results: tours.length,
