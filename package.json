@@ -14,7 +14,9 @@
     "env": "^0.0.2",
     "express": "^4.18.1",
     "mongoose": "^5.13.14",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "slugify": "^1.6.5",
+    "validator": "^13.7.0"
   },
   "devDependencies": {
     "eslint": "^8.16.0",

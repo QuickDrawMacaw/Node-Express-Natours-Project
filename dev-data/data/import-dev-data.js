@@ -3,6 +3,11 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const Tour = require('../../models/tourModel');
 
+/* In the terminal: 
+  node dev-data/data/import-dev-data.js --import
+  node dev-data/data/import-dev-data.js --delete 
+*/
+
 dotenv.config({ path: './config.env' });
 
 const DB = process.env.DATABASE.replace(
@@ -50,5 +55,4 @@ if (process.argv[2] === '--import') {
 } else if (process.argv[2] === '--delete') {
   deleteData();
 }
-
 console.log(process.argv);
