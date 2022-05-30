@@ -21,6 +21,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, 'A password is required.'],
     minLength: [8, 'A password must be at least 8 characters'],
+    select: false,
   },
   passwordConfirm: {
     type: String,
@@ -39,13 +40,20 @@ userSchema.pre('save', async function (next) {
   // Only run this function if password was actually modified.
   if (!this.isModified('password')) return next();
 
-  // HAsh the password with cost of 12
+  // Hash the password with cost of 12
   this.password = await bcrypt.hash(this.password, 12);
 
   // Delete passwordConfirm field
   this.passwordConfirm = undefined;
   next();
 });
+
+userSchema.methods.correctPassword = async function (
+  candidatePassword,
+  userPassword
+) {
+  return await bcrypt.compare(candidatePassword, userPassword);
+};
 
 const User = mongoose.model('User', userSchema);
 
