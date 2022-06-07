@@ -2,21 +2,30 @@
   "name": "natours",
   "version": "1.0.0",
   "description": "Learning Node express and mongoDB",
-  "main": "index.js",
+  "main": "app.js",
+  "targets": {
+    "main": false
+  },
   "scripts": {
     "start": "NODE_ENV=development nodemon server.js",
     "start:prod": "NODE_ENV=production nodemon server.js",
     "debug": "ndb server.js",
     "importData": "node ./dev-data/data/import-dev-data.js --import",
-    "deleteData": "node ./dev-data/data/import-dev-data.js --delete"
+    "deleteData": "node ./dev-data/data/import-dev-data.js --delete",
+    "build": "parcel build ./public/js/index.js --dist-dir ./public/js/bundled",
+    "watch:js": "parcel watch --no-hmr ./public/js/index.js --dist-dir ./public/js/bundled"
   },
   "author": "Yuki",
   "license": "ISC",
   "dependencies": {
+    "@babel/polyfill": "^7.12.1",
+    "axios": "^0.27.2",
     "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.6",
     "dotenv": "^16.0.1",
     "env": "^0.0.2",
     "express": "^4.18.1",
+    "express-csp": "^0.1.3",
     "express-mongo-sanitize": "^2.2.0",
     "express-rate-limit": "^6.4.0",
     "helmet": "^5.1.0",
@@ -41,6 +50,8 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.30.0",
+    "parcel": "^2.6.0",
+    "parcel-bundler": "^1.12.5",
     "prettier": "^2.6.2"
   }
 }
