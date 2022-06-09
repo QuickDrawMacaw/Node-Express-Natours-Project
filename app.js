@@ -14,6 +14,7 @@ const globalErrorHandler = require('./controllers/errorController');
 const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
 const reviewRouter = require('./routes/reviewRoutes');
+const bookingRouter = require('./routes/bookingRoutes');
 const viewRouter = require('./routes/viewRoutes');
 
 const app = express();
@@ -27,58 +28,19 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 //Set security HTTP headers
+app.use((req, res, next) => {
+  res.header(
+    'Access-Control-Allow-Origin',
+    'https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.js'
+  );
+  res.header(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept'
+  );
+  next();
+});
 
-// change your helmet middleware like below
-
-app.use(
-  helmet({
-    contentSecurityPolicy: {
-      directives: {
-        defaultSrc: ["'self'", 'data:', 'blob:', 'https:', 'ws:'],
-        baseUri: ["'self'"],
-        fontSrc: ["'self'", 'https:', 'data:'],
-        scriptSrc: [
-          "'self'",
-          'https:',
-          'http:',
-          'blob:',
-          'https://*.mapbox.com',
-          'https://js.stripe.com',
-          'https://m.stripe.network',
-          'https://*.cloudflare.com',
-        ],
-        frameSrc: ["'self'", 'https://js.stripe.com'],
-        objectSrc: ["'none'"],
-        styleSrc: ["'self'", 'https:', "'unsafe-inline'"],
-        workerSrc: [
-          "'self'",
-          'data:',
-          'blob:',
-          'https://*.tiles.mapbox.com',
-          'https://api.mapbox.com',
-          'https://events.mapbox.com',
-          'https://m.stripe.network',
-        ],
-        childSrc: ["'self'", 'blob:'],
-        imgSrc: ["'self'", 'data:', 'blob:'],
-        formAction: ["'self'"],
-        connectSrc: [
-          "'self'",
-          "'unsafe-inline'",
-          'data:',
-          'blob:',
-          'https://*.stripe.com',
-          'https://*.mapbox.com',
-          'https://*.cloudflare.com/',
-          'https://bundle.js:*',
-          'ws://127.0.0.1:*/',
-        ],
-        upgradeInsecureRequests: [],
-      },
-    },
-  })
-);
-// install express-csp and add the below in app.js
+app.use(helmet());
 
 csp.extend(app, {
   policy: {
@@ -95,7 +57,9 @@ csp.extend(app, {
         'https://*.mapbox.com',
         'https://*.cloudflare.com/',
         'https://bundle.js:8828',
-        'ws://localhost:56558/',
+        'http://localhost:*/',
+        'https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.js',
+        'https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css',
       ],
       'worker-src': [
         'self',
@@ -106,7 +70,9 @@ csp.extend(app, {
         'https://*.mapbox.com',
         'https://*.cloudflare.com/',
         'https://bundle.js:*',
-        'ws://localhost:*/',
+        'http://localhost:*/',
+        'https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.js',
+        'https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css',
       ],
       'frame-src': [
         'self',
@@ -117,7 +83,9 @@ csp.extend(app, {
         'https://*.mapbox.com',
         'https://*.cloudflare.com/',
         'https://bundle.js:*',
-        'ws://localhost:*/',
+        'http://localhost:*/',
+        'https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.js',
+        'https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css',
       ],
       'img-src': [
         'self',
@@ -128,7 +96,9 @@ csp.extend(app, {
         'https://*.mapbox.com',
         'https://*.cloudflare.com/',
         'https://bundle.js:*',
-        'ws://localhost:*/',
+        'http://localhost:*/',
+        'https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.js',
+        'https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css',
       ],
       'connect-src': [
         'self',
@@ -140,7 +110,9 @@ csp.extend(app, {
         'https://*.mapbox.com',
         'https://*.cloudflare.com/',
         'https://bundle.js:*',
-        'ws://localhost:*/',
+        'http://localhost:*/',
+        'https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.js',
+        'https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css',
       ],
     },
   },
@@ -199,6 +171,7 @@ app.use('/', viewRouter);
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/reviews', reviewRouter);
+app.use('/api/v1/bookings', bookingRouter);
 
 app.all('*', (req, res, next) => {
   // const err = new Error(`Can't find ${req.originalUrl} on the server!`);
