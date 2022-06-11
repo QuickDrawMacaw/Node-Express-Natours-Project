@@ -51,3 +51,26 @@ exports.getAllBookings = factory.getAll(Booking);
 exports.createBooking = factory.createOne(Booking);
 exports.updateBooking = factory.updateOne(Booking);
 exports.deleteBooking = factory.deleteOne(Booking);
+
+exports.checkUserHasBooking = catchAsync(async (req, res, next) => {
+  const booking = await Booking.find({
+    user: req.user.id,
+    tour: req.body.tour,
+  });
+  console.log(' sadasd' + req.query);
+
+  const tour = await Tour.findById(req.body.tour); // access the db and find the tour by the id
+  const date = tour.startDates;
+  console.log('tour date: ' + date[0] + '\n');
+  console.log('tour date: ' + date[1] + '\n');
+  console.log('tour date: ' + date[2] + '\n');
+
+  console.log('🥽🎪🎭🎪 ' + req.body.user);
+  console.log('🥽🎪🎭🎪 ' + req.body.tour);
+
+  if (booking.length === 0)
+    return next(new AppError('You must book this tour to review it', 401));
+
+  //if (Date.now() < req.body.tour.date) next();
+  next();
+});

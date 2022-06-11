@@ -48,6 +48,18 @@ exports.getLoginForm = (req, res, next) => {
     });
 };
 
+exports.getSignUpForm = (req, res, next) => {
+  res
+    .status(200)
+    .set(
+      'Content-Security-Policy',
+      "script-src 'self' https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js 'unsafe-inline' 'unsafe-eval';"
+    )
+    .render('signup', {
+      title: 'SignUp',
+    });
+};
+
 exports.getAccount = (req, res) => {
   res.status(200).render('account', {
     title: 'Your account',

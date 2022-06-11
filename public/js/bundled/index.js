@@ -145,11 +145,13 @@
 })({"f2QDv":[function(require,module,exports) {
 /*eslint-disable */ var _mapbox = require("./mapbox");
 var _login = require("./login");
+var _signUp = require("./signUp");
 var _updateSettings = require("./updateSettings");
 var _stripe = require("./stripe");
 //DOM ELEMENTS
 const mapBox = document.getElementById("map");
 const loginForm = document.querySelector(".form--login");
+const signUpForm = document.querySelector(".form--signUp");
 const logOutBtn = document.querySelector(".nav__el--logout");
 const userDataForm = document.querySelector(".form-user-data");
 const userPasswordForm = document.querySelector(".form-user-password");
@@ -164,6 +166,15 @@ if (loginForm) loginForm.addEventListener("submit", (e)=>{
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
     (0, _login.login)(email, password);
+});
+if (signUpForm) signUpForm.addEventListener("submit", (e)=>{
+    console.log("Gathering sign up data from document");
+    e.preventDefault();
+    const name = document.getElementById("name").value;
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+    const passwordConfirm = document.getElementById("passwordConfirm").value;
+    (0, _signUp.signUp)(name, email, password, passwordConfirm);
 });
 if (logOutBtn) logOutBtn.addEventListener("click", (0, _login.logout));
 if (userDataForm) userDataForm.addEventListener("submit", (e)=>{
@@ -197,7 +208,7 @@ if (bookBtn) bookBtn.addEventListener("click", (e)=>{
     (0, _stripe.bookTour)(tourId);
 });
 
-},{"./mapbox":"3zDlz","./login":"7yHem","./updateSettings":"l3cGY","./stripe":"10tSC"}],"3zDlz":[function(require,module,exports) {
+},{"./mapbox":"3zDlz","./login":"7yHem","./updateSettings":"l3cGY","./stripe":"10tSC","./signUp":"a26Sx"}],"3zDlz":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "displayMap", ()=>displayMap);
@@ -367,6 +378,36 @@ const bookTour = async (tourId)=>{
     }
 };
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./alerts":"6Mcnf"}]},["f2QDv"], "f2QDv", "parcelRequire11c7")
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./alerts":"6Mcnf"}],"a26Sx":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "signUp", ()=>signUp);
+/*eslint-disable*/ var _alerts = require("./alerts");
+const signUp = async (name, email, password, passwordConfirm)=>{
+    console.log("SignUp Function called");
+    console.log(name, email, password, passwordConfirm);
+    try {
+        const res = await axios({
+            method: "POST",
+            url: "api/v1/users/signup",
+            data: {
+                name,
+                email,
+                password,
+                passwordConfirm
+            }
+        });
+        if (res.data.status === "success") {
+            (0, _alerts.showAlert)("success", "Signed Up Successfully!");
+            window.setTimeout(()=>{
+                location.assign("/");
+            }, 1500);
+        }
+    } catch (error) {
+        (0, _alerts.showAlert)("error", error.response.data.message);
+    }
+};
+
+},{"./alerts":"6Mcnf","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["f2QDv"], "f2QDv", "parcelRequire11c7")
 
 //# sourceMappingURL=index.js.map
