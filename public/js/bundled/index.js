@@ -185,7 +185,7 @@ if (userDataForm) userDataForm.addEventListener("submit", (e)=>{
     form.append("name", document.getElementById("name").value);
     form.append("email", document.getElementById("email").value);
     form.append("photo", document.getElementById("photo").files[0]);
-    console.log(form);
+    //console.log(form);
     (0, _updateSettings.updateSettings)(form, "data");
 });
 if (userPasswordForm) userPasswordForm.addEventListener("submit", async (e)=>{
@@ -300,7 +300,7 @@ const login = async (email, password)=>{
     try {
         const res = await axios({
             method: "POST",
-            url: "api/v1/users/login",
+            url: "/api/v1/users/login",
             data: {
                 email,
                 password
@@ -320,7 +320,7 @@ const logout = async ()=>{
     try {
         const res = await axios({
             method: "GET",
-            url: "http://localhost:3000/api/v1/users/logout"
+            url: "/api/v1/users/logout"
         });
         res.data.status = "success";
         (0, _alerts.showAlert)("success", "Logged out successfully!");
@@ -355,7 +355,7 @@ parcelHelpers.export(exports, "updateSettings", ()=>updateSettings);
 /*eslint-disable*/ var _alerts = require("./alerts");
 const updateSettings = async (data, type)=>{
     try {
-        const url = type === "password" ? "http://localhost:3000/api/v1/users/updateMyPassword" : "http://localhost:3000/api/v1/users/updateMe";
+        const url = type === "password" ? "/api/v1/users/updateMyPassword" : "/api/v1/users/updateMe";
         const res = await axios({
             method: "PATCH",
             url,
@@ -377,10 +377,10 @@ const stripe = Stripe("pk_test_51L1cmfGRx5FpZL4gyKa353HImhsjOyyhgK8a0D5JZMyqVquY
 const bookTour = async (tourId)=>{
     try {
         // 1) Get checkout session from API
-        const session = await axios(`http://localhost:3000/api/v1/bookings/checkout-session/${tourId}`);
-        console.log("SESSION \uD83D\uDE9A\uD83D\uDE92" + session);
+        const session = await axios(`/api/v1/bookings/checkout-session/${tourId}`);
+        //console.log('SESSION 🚚🚒' + session);
         // 2) Create checkout form + charge credit card
-        console.log(session.data.session.id);
+        //console.log(session.data.session.id);
         await stripe.redirectToCheckout({
             sessionId: session.data.session.id
         });
@@ -396,8 +396,6 @@ parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "signUp", ()=>signUp);
 /*eslint-disable*/ var _alerts = require("./alerts");
 const signUp = async (name, email, password, passwordConfirm)=>{
-    console.log("SignUp Function called");
-    console.log(name, email, password, passwordConfirm);
     try {
         const res = await axios({
             method: "POST",

@@ -41,7 +41,7 @@ exports.signup = catchAsync(async (req, res, next) => {
     role: req.body.role,
   });
   const url = `${req.protocol}://${req.get('host')}/me`;
-  console.log(url);
+  //console.log(url);
   await new Email(newUser, url).sendWelcome();
 
   createSendToken(newUser, 201, res);
@@ -99,7 +99,7 @@ exports.isLoggedIn = async (req, res, next) => {
 };
 
 exports.logout = (req, res) => {
-  console.log('LOGGING OUT');
+  //console.log('LOGGING OUT');
   res.cookie('jwt', 'loggedout', {
     expires: new Date(Date.now() + 1 * 1000),
     httpOnly: true,

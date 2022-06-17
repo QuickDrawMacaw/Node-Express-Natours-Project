@@ -57,16 +57,6 @@ exports.checkUserHasBooking = catchAsync(async (req, res, next) => {
     user: req.user.id,
     tour: req.body.tour,
   });
-  console.log(' sadasd' + req.query);
-
-  const tour = await Tour.findById(req.body.tour); // access the db and find the tour by the id
-  const date = tour.startDates;
-  console.log('tour date: ' + date[0] + '\n');
-  console.log('tour date: ' + date[1] + '\n');
-  console.log('tour date: ' + date[2] + '\n');
-
-  console.log('🥽🎪🎭🎪 ' + req.body.user);
-  console.log('🥽🎪🎭🎪 ' + req.body.tour);
 
   if (booking.length === 0)
     return next(new AppError('You must book this tour to review it', 401));

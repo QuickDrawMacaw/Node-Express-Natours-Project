@@ -76,7 +76,7 @@ exports.getManageToursForm = catchAsync(async (req, res, next) => {
 
 exports.getEditTourForm = catchAsync(async (req, res, next) => {
   const tour = await Tour.findOne({ slug: req.params.slug }); //use findOne instead of find - find returns undefined when tour.name is called
-  console.log(tour);
+  //console.log(tour);
 
   res
     .status(200)
