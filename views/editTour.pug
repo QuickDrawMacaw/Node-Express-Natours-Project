@@ -1,0 +1,39 @@
+extends base
+
+block content 
+    main.main
+    .editTour-form
+        h2.heading-secondary.ma-bt-lg= tour.name
+        form.form.form-edit-tour
+            .form__group
+                label.form__label(for='name') Tour Name
+                input#name.form__input(type='name', required, value=tour.name)
+            .form__group
+                label.form__label(for='duration') Duration
+                input#duration.form__input(type='text', required, value=tour.duration)         
+            .form__group.ma-bt-md
+                label.form__label(for='maxGroupSize') Quantity
+                input#quantity.form__input(type='quantity', required, minlength='1' value=tour.maxGroupSize)
+            .form__group.ma-bt-md
+                label.form__label(for='price') Price
+                input#price.form__input(type='price', required, minlength='1', value=tour.price)
+            .form__group.ma-bt-md
+                label.form__label(for='difficulty') Difficulty
+                input#difficulty.form__input(type='text', required, value=tour.difficulty)
+            .form__group.ma-bt-md
+                label.form__label(for='price') Location
+                input#startLocation.form__input(type='text', required, minlength='2', value=tour.startLocation.description)
+            .form__group.ma-bt-md
+                label.form__label(for='summary') Summary
+                input#summary.form__input(type='text', required, minlength='2', value=tour.summary)
+            .form__group.ma-bt-md
+                label.form__label(for='description') Description
+                input#description.form__input(type='text', required, minlength='2', value=tour.description)
+            .form__group.ma-bt-md
+                label.form__label(for='guides') Guides
+                    each guide in tour.guides
+                        .overview-box__detail
+                        img.overview-box__img(src=`/img/users/${guide.photo}`, alt=`${guide.name}`)
+                        span#span.overview-box__text=guide.name
+            .form__group
+                button.btn.btn--green.btn--edit-tour Save Edit

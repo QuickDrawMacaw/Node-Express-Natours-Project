@@ -60,6 +60,36 @@ exports.getSignUpForm = (req, res, next) => {
     });
 };
 
+exports.getManageToursForm = catchAsync(async (req, res, next) => {
+  const tours = await Tour.find(); // retrieve the tour data from the db
+  res
+    .status(200)
+    .set(
+      'Content-Security-Policy',
+      "script-src 'self' https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js 'unsafe-inline' 'unsafe-eval';"
+    )
+    .render('manageTours', {
+      title: 'Manage Tours',
+      tours,
+    });
+});
+
+exports.getEditTourForm = catchAsync(async (req, res, next) => {
+  const tour = await Tour.findOne({ slug: req.params.slug }); //use findOne instead of find - find returns undefined when tour.name is called
+  console.log(tour);
+
+  res
+    .status(200)
+    .set(
+      'Content-Security-Policy',
+      "script-src 'self' https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js 'unsafe-inline' 'unsafe-eval';"
+    )
+    .render('editTour', {
+      title: 'Edit Tour',
+      tour,
+    });
+});
+
 exports.getAccount = (req, res) => {
   res.status(200).render('account', {
     title: 'Your account',
@@ -80,8 +110,30 @@ exports.getMyTours = catchAsync(async (req, res, next) => {
   });
 });
 
+// exports.updateTourData = catchAsync(async (req, res, next) => {
+//   console.log('Updating Tour');
+//   // const updatedTour = await Tour.findByIdAndUpdate(
+//   //   req.tour.id,
+//   //   {
+//   //     name: req.body.name,
+//   //     price: req.body.price,
+//   //     duration: req.body.duration,
+//   //   },
+//   //   {
+//   //     new: true,
+//   //     runValidators: true,
+//   //   }
+//   // );
+//   console.log('🎏🎎🎍🎍' + updatedTour);
+//   //Tour.updateOne(updatedTour);
+//   // updateTour(updatedTour);
+//   // res.status(200).json({
+//   //   status: 'success',
+//   //   message: 'The tour has been updated',
+//   // });
+// });
+
 exports.updateUserData = catchAsync(async (req, res, next) => {
-  console.log('Updating User ' + req.body);
   const updatedUser = await User.findByIdAndUpdate(
     req.user.id,
     {

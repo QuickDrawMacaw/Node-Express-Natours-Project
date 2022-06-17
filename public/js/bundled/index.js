@@ -148,6 +148,7 @@ var _login = require("./login");
 var _signUp = require("./signUp");
 var _updateSettings = require("./updateSettings");
 var _stripe = require("./stripe");
+var _updateTour = require("./updateTour");
 //DOM ELEMENTS
 const mapBox = document.getElementById("map");
 const loginForm = document.querySelector(".form--login");
@@ -156,6 +157,7 @@ const logOutBtn = document.querySelector(".nav__el--logout");
 const userDataForm = document.querySelector(".form-user-data");
 const userPasswordForm = document.querySelector(".form-user-password");
 const bookBtn = document.getElementById("book-tour");
+//const editTour = document.getElementById('.form--editTour');
 //DELEGATION
 if (mapBox) {
     const locations = JSON.parse(mapBox.dataset.locations);
@@ -206,9 +208,19 @@ if (bookBtn) bookBtn.addEventListener("click", (e)=>{
     e.target.textContent = "Processing..";
     const tourId = e.target.dataset.tourId;
     (0, _stripe.bookTour)(tourId);
-});
+}); // if (editTour)
+ //   editTour.addEventListener('submit', async (e) => {
+ //     e.preventDefault();
+ //     document.querySelector('.btn--edit-tour').textContent = 'Updating...';
+ //     const name = document.getElementById('name').value;
+ //     const duration = document.getElementById('duration').value;
+ //     const price = document.getElementById('price').value;
+ //     //const tour = { name, quantity, price };
+ //     console.log('Updating tour ' + tour.name);
+ //     await updateTour(name, price, duration);
+ //   });
 
-},{"./mapbox":"3zDlz","./login":"7yHem","./updateSettings":"l3cGY","./stripe":"10tSC","./signUp":"a26Sx"}],"3zDlz":[function(require,module,exports) {
+},{"./mapbox":"3zDlz","./login":"7yHem","./updateSettings":"l3cGY","./stripe":"10tSC","./signUp":"a26Sx","./updateTour":"dQUyc"}],"3zDlz":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "displayMap", ()=>displayMap);
@@ -353,7 +365,7 @@ const updateSettings = async (data, type)=>{
     } catch (err) {
         (0, _alerts.showAlert)("error", err.response.data.message);
     }
-}; /*eslint-disable*/ 
+};
 
 },{"./alerts":"6Mcnf","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"10tSC":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
@@ -407,6 +419,26 @@ const signUp = async (name, email, password, passwordConfirm)=>{
         (0, _alerts.showAlert)("error", error.response.data.message);
     }
 };
+
+},{"./alerts":"6Mcnf","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"dQUyc":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "updateTour", ()=>updateTour);
+/*eslint-disable*/ var _alerts = require("./alerts");
+const updateTour = async (name, price, duration)=>{
+    try {
+        const res = await axios({
+            method: "PATCH",
+            url: `api/v1/tours/${data.id}`,
+            name,
+            price,
+            duration
+        });
+        if (res.data.status === "success") (0, _alerts.showAlert)("success", `Tour updated successfully!`);
+    } catch (err) {
+        (0, _alerts.showAlert)("error", err.response.data.message);
+    }
+}; //      url: `api/v1/tours/${data.id}`,
 
 },{"./alerts":"6Mcnf","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["f2QDv"], "f2QDv", "parcelRequire11c7")
 

@@ -5,6 +5,7 @@ import { login, logout } from './login';
 import { signUp } from './signUp';
 import { updateSettings } from './updateSettings';
 import { bookTour } from './stripe';
+import { updateTour } from './updateTour';
 
 //DOM ELEMENTS
 const mapBox = document.getElementById('map');
@@ -14,6 +15,8 @@ const logOutBtn = document.querySelector('.nav__el--logout');
 const userDataForm = document.querySelector('.form-user-data');
 const userPasswordForm = document.querySelector('.form-user-password');
 const bookBtn = document.getElementById('book-tour');
+
+//const editTour = document.getElementById('.form--editTour');
 
 //DELEGATION
 if (mapBox) {
@@ -82,3 +85,18 @@ if (bookBtn)
     const tourId = e.target.dataset.tourId;
     bookTour(tourId);
   });
+
+// if (editTour)
+//   editTour.addEventListener('submit', async (e) => {
+//     e.preventDefault();
+//     document.querySelector('.btn--edit-tour').textContent = 'Updating...';
+
+//     const name = document.getElementById('name').value;
+//     const duration = document.getElementById('duration').value;
+//     const price = document.getElementById('price').value;
+
+//     //const tour = { name, quantity, price };
+//     console.log('Updating tour ' + tour.name);
+
+//     await updateTour(name, price, duration);
+//   });

@@ -33,7 +33,6 @@ exports.uploadUserPhoto = upload.single('photo');
 
 exports.resizeUserPhoto = catchAsync(async (req, res, next) => {
   if (!req.file) {
-    console.log('OH NO');
     return next();
   }
 
